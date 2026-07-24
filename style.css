@@ -230,3 +230,25 @@ footer {
     -webkit-overflow-scrolling: touch;
   }
 }
+
+/* Add/Replace inside your @media (max-width: 768px) block */
+@media (max-width: 768px) {
+  .hero {
+    padding: 2rem 1.5rem 1rem 1.5rem !important;
+    text-align: center !important; /* Center align titles on phones */
+  }
+
+  .hero-title {
+    font-size: 1.75rem !important;
+    margin-left: 0 !important; /* Remove huge left margin on mobile */
+    letter-spacing: 1px !important;
+    text-align: center !important;
+  }
+
+  .hero-tagline {
+    font-size: 0.9rem !important;
+    margin-left: 0 !important; /* Remove huge left margin on mobile */
+    letter-spacing: 6px !important; /* Reduce wide letter spacing so it fits on screen */
+    text-align: center !important;
+  }
+}
