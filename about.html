@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
+  <title>About Me | Matthew R. Chase Design</title>
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* Full-screen video background setup */
+    #bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -2;
+    }
+
+    /* Dark overlay so text remains easy to read over the video */
+    .video-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: -1;
+    }
+
+    /* Shared Float Up + Fade Keyframes */
+    @keyframes floatUpFade {
+      from {
+        opacity: 0;
+        transform: translateY(50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Wipe Reveal Keyframe (Left-to-Right) */
+    @keyframes wipeReveal {
+      from {
+        clip-path: inset(0 100% 0 0);
+      }
+      to {
+        clip-path: inset(0 0 0 0);
+      }
+    }
+
+    /* Keep delayed sections hidden initially */
+    .about-hero,
+    .about-container,
+    footer {
+      opacity: 0;
+    }
+
+    /* 1. Header (Starts at 0s) */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 3rem;
+      animation: floatUpFade 2.5s ease-out 0s forwards;
+    }
+
+    /* Header logo image styling */
+    .logo img {
+      max-height: 200px; 
+      width: auto;
+      display: block;
+    }
+
+    /* Centered Navigation & Menu Text */
+    nav {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem;
+    }
+
+    nav a {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-decoration: none;
+      color: #ffffff;
+      transition: color 0.2s ease;
+    }
+
+    nav a:hover, nav a.active {
+      color: #4af;
+    }
+
+    /* Social Media Icons */
+    .header-socials {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .header-socials a img {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+      opacity: 0.85;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .header-socials a:hover img {
+      opacity: 1;
+      transform: translateY(-2px);
+    }
+
+    /* 2. Hero Section Header Title (Starts at 2.5s) */
+    .about-hero {
+      padding: 3rem 3rem 1rem 3rem;
+      text-align: center;
+      animation: floatUpFade 2s ease-out 2.5s forwards;
+    }
+
+    .about-title {
+      font-family: "Helvetica Neue", Times, serif;
+      font-size: 3rem; 
+      font-weight: 400;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #ffffff;
+      margin: 0;
+    }
+
+    /* 3. Side-by-Side Bio & Photo Layout (Starts at 4s) */
+    .about-container {
+      max-width: 1200px;
+      margin: 2rem auto 4rem auto;
+      padding: 0 3rem;
+      display: flex;
+      gap: 3rem;
+      align-items: flex-start;
+      animation: floatUpFade 2s ease-out 4s forwards;
+    }
+
+    .bio-text {
+      flex: 1;
+      color: #e0e0e0;
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      font-size: 1.05rem;
+      line-height: 1.7;
+    }
+
+    .bio-text p {
+      margin-bottom: 1.5rem;
+    }
+
+    .bio-text strong {
+      color: #ffffff;
+    }
+
+    .bio-photo {
+      flex: 0 0 400px;
+    }
+
+    .bio-photo img {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+      object-fit: cover;
+      
+      /* Wipe Reveal Animation */
+      clip-path: inset(0 100% 0 0);
+      animation: wipeReveal 1.8s cubic-bezier(0.25, 1, 0.5, 1) 4s forwards;
+    }
+
+    /* 4. Footer (Starts at 5.5s) */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: #888;
+      font-size: 0.9rem;
+      animation: floatUpFade 1.5s ease-out 5.5s forwards;
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 900px) {
+      .about-container {
+        flex-direction: column-reverse;
+        padding: 0 1.5rem;
+      }
+
+      .bio-photo {
+        flex: 1 1 auto;
+        width: 100%;
+        max-width: 400px;
+        margin: 0 auto 2rem auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Video Element -->
+  <video autoplay muted loop playsinline id="bg-video">
+    <source src="Portfolio Background.mp4" type="video/mp4">
+  </video>
+  
+  <!-- Overlay tint for text legibility -->
+  <div class="video-overlay"></div>
+
+  <!-- Header & Navigation -->
+  <header>
+    <div class="logo">
+      <a href="index.html">
+        <img src="Chase Design Logo.png?v=2" alt="Matthew R. Chase Sound Design">
+      </a>
+    </div>
+
+    <!-- Centered Main Nav -->
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html" class="active">About</a>
+      <a href="resume.html">Resume/CV</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="#">Contact</a>
+    </nav>
+
+    <!-- Social Links -->
+    <div class="header-socials">
+      <a href="http://www.linkedin.com/in/chasematthewr" target="_blank" rel="noopener noreferrer">
+        <img src="linkedin.avif" alt="LinkedIn">
+      </a>
+      <a href="https://www.facebook.com/ChaseMatthewR" target="_blank" rel="noopener noreferrer">
+        <img src="facebook.avif" alt="Facebook">
+      </a>
+      <a href="https://www.instagram.com/matthewrchase/" target="_blank" rel="noopener noreferrer">
+        <img src="instagram.avif" alt="Instagram">
+      </a>
+    </div>
+  </header>
+
+  <!-- Title Header -->
+  <section class="about-hero">
+    <h1 class="about-title">About Me</h1>
+  </section>
+
+  <!-- Side-by-Side Bio and Photo -->
+  <main class="about-container">
+    <div class="bio-text">
+      <p>
+        Matthew R. Chase is a Chicago-based Theatrical Sound Designer & Production Manager.
+      </p>
+      <p>
+        <strong>Sound Design credits include:</strong><br>
+        <strong>REGIONAL/SOUND DESIGN:</strong> <em>Assassins</em> (Capital City Theater); <em>Strangers On A Train</em> (Meadow Brook Theatre).<br>
+        <strong>CHICAGO/SOUND DESIGN:</strong> <em>Diana</em>, <em>Tell Me On A Sunday</em>, <em>The Secret Garden</em>, <em>Never Better</em>, <em>The Sondheim Tribute Revue</em>, <em>Assassins</em>, <em>Baked: A New Musical!</em> (Theo); <em>Rock of Ages</em> (Metropolis Performing Arts Centre); <em>Fun Home</em>, <em>Sunday in the Park with George</em>, <em>Anything Goes</em>, <em>Ernest Shackleton Loves Me</em>, <em>Cabaret</em>, <em>Rent</em>, <em>Spring Awakening</em> (Porchlight Music Theatre); <em>Legally Blonde: The Musical</em>, <em>Little Shop of Horrors</em>, <em>Shrek the Musical</em>, <em>The Producers</em>, <em>Pippin</em> (Music Theater Works); <em>Who’s Holiday</em> (Theater Wit); <em>The House Without a Christmas Tree</em> (Griffin Theatre Company); <em>Elephant And Piggie's We Are in a Play</em> (Marriott Theatre).
+      </p>
+      <p>
+        <strong>Production Manager Credits include:</strong><br>
+        <em>Girls and Boys</em>, <em>The House Without a Christmas Tree</em>, <em>Marys Seacole</em>, <em>Heisenberg</em> (Griffin Theatre Company); <em>The Secret Garden</em>, <em>Never Better</em>, <em>A Little Night Music</em>, <em>The Sondheim Tribute Revue</em>, <em>Assassins</em>, <em>Baked!: A New Musical</em>, <em>Passing Strange</em>, <em>The Threepenny Opera</em> (Theo); <em>Inanimate</em>, <em>Who's Holiday!</em>, <em>Household Spirits</em>, <em>The Whistleblower</em>, <em>Hurricane Diane</em>, <em>Mr. Burns a post electric play</em> (Theater Wit); <em>Spring Awakening</em> (Porchlight Music Theatre).
+      </p>
+    </div>
+
+    <div class="bio-photo">
+      <img src="About Me.avif" alt="Matthew R. Chase">
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; Matthew R. Chase Design. All rights reserved.</p>
+  </footer>
+
+</body>
+</html>

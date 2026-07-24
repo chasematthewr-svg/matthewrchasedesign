@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
+  <title>Portfolio | Matthew R. Chase Design</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- PapaParse for Google Sheet CSV parsing -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+
+  <style>
+    /* Full-screen video background setup */
+    #bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -2;
+    }
+
+    /* Dark overlay so text remains easy to read over the video */
+    .video-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: -1;
+    }
+
+    /* Shared Float Up + Fade Keyframes */
+    @keyframes floatUpFade {
+      from {
+        opacity: 0;
+        transform: translateY(50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Keep delayed sections hidden initially */
+    .hero,
+    #all-shows-section,
+    footer {
+      opacity: 0;
+    }
+
+    /* 1. Header (Starts at 0s) */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 3rem;
+      animation: floatUpFade 2.5s ease-out 0s forwards;
+    }
+
+    /* Header logo image styling */
+    .logo img {
+      max-height: 200px; 
+      width: auto;
+      display: block;
+    }
+
+    /* Centered Navigation & Menu Text */
+    nav {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem;
+    }
+
+    nav a {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-decoration: none;
+      color: #ffffff;
+      transition: color 0.2s ease;
+    }
+
+    nav a:hover, nav a.active {
+      color: #4af;
+    }
+
+    /* Social Media Icons */
+    .header-socials {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .header-socials a img {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+      opacity: 0.85;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .header-socials a:hover img {
+      opacity: 1;
+      transform: translateY(-2px);
+    }
+
+    /* 2. Portfolio Hero Title Layout (Starts at 2.5s) */
+    .hero {
+      padding: 3rem 3rem 1rem 3rem;
+      text-align: center;
+      animation: floatUpFade 2s ease-out 2.5s forwards;
+    }
+
+    .hero-title {
+      font-family: "Helvetica Neue", Times, serif;
+      font-size: 3rem; 
+      font-weight: 400;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #ffffff;
+      margin: 0;
+    }
+
+    /* 3. Main Shows Grid Section (Starts at 4s) */
+    #all-shows-section {
+      animation: floatUpFade 2s ease-out 4s forwards;
+    }
+
+    /* 4. Footer (Starts at 5.5s) */
+    footer {
+      animation: floatUpFade 1.5s ease-out 5.5s forwards;
+    }
+
+    /* Show Cards Interactive Hover & Cursor */
+    .show-card {
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .show-card:hover {
+      transform: translateY(-4px);
+    }
+
+    /* Modal Overlay & Base Container */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .modal.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(4px);
+    }
+
+    /* Modal Main Content Box */
+    .modal-content {
+      position: relative;
+      background: #181818;
+      border: 1px solid #333;
+      border-radius: 8px;
+      max-width: 750px;
+      width: 90%;
+      max-height: 85vh;
+      overflow-y: auto;
+      z-index: 1001;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      color: #fff;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1.2rem;
+      background: transparent;
+      border: none;
+      color: #aaa;
+      font-size: 2rem;
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+
+    .modal-close:hover {
+      color: #fff;
+    }
+
+    .modal-body {
+      display: flex;
+      flex-direction: row;
+      gap: 2rem;
+      padding: 2rem;
+    }
+
+    .modal-image-container {
+      flex: 0 0 250px;
+    }
+
+    .modal-image-container img {
+      width: 100%;
+      height: auto;
+      border-radius: 4px;
+      object-fit: cover;
+    }
+
+    .modal-details {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .modal-details h2 {
+      font-size: 1.8rem;
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-role {
+      color: #4af;
+      font-weight: 600;
+      margin: 0 0 0.25rem 0;
+    }
+
+    .modal-company {
+      font-size: 1.1rem;
+      color: #ddd;
+      margin: 0 0 0.25rem 0;
+    }
+
+    .modal-dates, .modal-location {
+      font-size: 0.9rem;
+      color: #aaa;
+      margin: 0 0 0.25rem 0;
+    }
+
+    .modal-description {
+      margin-top: 1rem;
+      line-height: 1.5;
+      color: #ccc;
+      font-size: 0.95rem;
+    }
+
+    .modal-ticket-btn {
+      display: inline-block;
+      align-self: flex-start;
+      margin-top: 1.5rem;
+      padding: 0.6rem 1.2rem;
+      background-color: #4af;
+      color: #000;
+      font-weight: bold;
+      text-decoration: none;
+      border-radius: 4px;
+      transition: background-color 0.2s ease;
+    }
+
+    .modal-ticket-btn:hover {
+      background-color: #38d;
+    }
+
+    /* Mobile Adaptations for Modal */
+    @media (max-width: 600px) {
+      .modal-body {
+        flex-direction: column;
+        padding: 1.5rem;
+      }
+      .modal-image-container {
+        flex: 1 1 auto;
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Video Element -->
+  <video autoplay muted loop playsinline id="bg-video">
+    <source src="Portfolio Background.mp4" type="video/mp4">
+  </video>
+  
+  <!-- Overlay tint for text legibility -->
+  <div class="video-overlay"></div>
+
+  <!-- Header & Navigation -->
+  <header>
+    <div class="logo">
+      <a href="index.html">
+        <img src="Chase Design Logo.png?v=2" alt="Matthew R. Chase Sound Design">
+      </a>
+    </div>
+
+<!-- Centered Main Nav -->
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+    <a href="resume.html">Resume/CV</a>
+      <a href="portfolio.html" class="active">Portfolio</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+
+    <!-- Social Links -->
+    <div class="header-socials">
+      <a href="http://www.linkedin.com/in/chasematthewr" target="_blank" rel="noopener noreferrer">
+        <img src="linkedin.avif" alt="LinkedIn">
+      </a>
+      <a href="https://www.facebook.com/ChaseMatthewR" target="_blank" rel="noopener noreferrer">
+        <img src="facebook.avif" alt="Facebook">
+      </a>
+      <a href="https://www.instagram.com/matthewrchase/" target="_blank" rel="noopener noreferrer">
+        <img src="instagram.avif" alt="Instagram">
+      </a>
+    </div>
+  </header>
+
+  <!-- Hero Section with Centered Portfolio Title -->
+  <section class="hero">
+    <h1 class="hero-title">Portfolio</h1>
+  </section>
+
+  <!-- Main Content Section: Displays All Shows -->
+  <main class="portfolio">
+    <section id="all-shows-section">
+      <div id="all-shows-grid" class="grid-container">
+        <p class="loading">Loading portfolio...</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; Matthew R. Chase Design. All rights reserved.</p>
+  </footer>
+
+  <!-- Show Detail Modal -->
+  <div id="show-modal" class="modal" aria-hidden="true">
+    <div class="modal-overlay" id="modal-overlay"></div>
+    <div class="modal-content">
+      <button class="modal-close" id="modal-close-btn">&times;</button>
+      <div class="modal-body">
+        <div class="modal-image-container">
+          <img id="modal-image" src="" alt="Show Poster">
+        </div>
+        <div class="modal-details">
+          <h2 id="modal-title"></h2>
+          <p id="modal-role" class="modal-role"></p>
+          <p id="modal-company" class="modal-company"></p>
+          <p id="modal-dates" class="modal-dates"></p>
+          <p id="modal-location" class="modal-location"></p>
+          <div id="modal-description" class="modal-description"></div>
+          <a id="modal-ticket-btn" href="#" target="_blank" rel="noopener noreferrer" class="modal-ticket-btn">Get Tickets &rarr;</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const RAW_CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQtub6I4pqSBBwcLsobakL3FzFrKjTziSRvThnyWs50Dqzk0G4W9pKDMm2UWgj2-JFB82a4BSpUfR1B/pub?gid=0&single=true&output=csv';
+    
+    const freshCsvUrl = RAW_CSV_URL + '&t=' + Date.now();
+    const GOOGLE_SHEET_CSV_URL = 'https://corsproxy.io/?' + encodeURIComponent(freshCsvUrl);
+
+    function parseDate(dateStr) {
+      if (!dateStr || typeof dateStr !== 'string') return null;
+      const cleanStr = dateStr.trim();
+      if (!cleanStr) return null;
+
+      const parsed = new Date(cleanStr);
+      return isNaN(parsed.getTime()) ? null : parsed;
+    }
+
+    /* Modal open/close logic */
+    function openModal(show, photoUrl) {
+      const modal = document.getElementById('show-modal');
+      
+      document.getElementById('modal-image').src = photoUrl;
+      document.getElementById('modal-image').alt = show['Show Name'] || 'Show Poster';
+      document.getElementById('modal-title').textContent = show['Show Name'] || 'Untitled Show';
+      
+      // Role
+      const roleEl = document.getElementById('modal-role');
+      roleEl.textContent = show.Role || '';
+      roleEl.style.display = show.Role ? 'block' : 'none';
+
+      // Company
+      const companyEl = document.getElementById('modal-company');
+      companyEl.textContent = show.Company || '';
+      companyEl.style.display = show.Company ? 'block' : 'none';
+
+      // Dates
+      const datesEl = document.getElementById('modal-dates');
+      datesEl.textContent = show.Dates || '';
+      datesEl.style.display = show.Dates ? 'block' : 'none';
+
+      // Location
+      const locEl = document.getElementById('modal-location');
+      locEl.textContent = show.Location || '';
+      locEl.style.display = show.Location ? 'block' : 'none';
+
+      // Description
+      const descEl = document.getElementById('modal-description');
+      descEl.textContent = show.Description || '';
+      descEl.style.display = show.Description ? 'block' : 'none';
+
+      // Ticket Link
+      const ticketBtn = document.getElementById('modal-ticket-btn');
+      if (show['Ticket Link'] && show['Ticket Link'].trim() !== '') {
+        ticketBtn.href = show['Ticket Link'].trim();
+        ticketBtn.style.display = 'inline-block';
+      } else {
+        ticketBtn.style.display = 'none';
+      }
+
+      modal.classList.add('active');
+      modal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('show-modal');
+      modal.classList.remove('active');
+      modal.setAttribute('aria-hidden', 'true');
+    }
+
+    function createShowCard(show) {
+      let rawPhoto = show['Main Photo'] ? show['Main Photo'].trim() : '';
+
+      if (rawPhoto.includes('drive.google.com') && rawPhoto.includes('/d/')) {
+        const fileId = rawPhoto.split('/d/')[1].split('/')[0];
+        rawPhoto = `https://lh3.googleusercontent.com/d/${fileId}`;
+      }
+
+      const photoUrl = rawPhoto !== '' ? rawPhoto : 'https://via.placeholder.com/400x300?text=No+Photo';
+
+      const card = document.createElement('div');
+      card.className = 'show-card';
+      card.innerHTML = `
+        <div class="card-image">
+          <img src="${photoUrl}" alt="${show['Show Name'] || 'Show Poster'}">
+        </div>
+        <div class="card-info">
+          <h4>${show['Show Name'] || 'Untitled Show'}</h4>
+          ${show.Company ? `<p class="company">${show.Company}</p>` : ''}
+          ${show.Dates ? `<p class="dates" style="color:#888; font-size:0.8rem;">${show.Dates}</p>` : ''}
+        </div>
+      `;
+
+      // Open detail modal when card is clicked
+      card.addEventListener('click', () => {
+        openModal(show, photoUrl);
+      });
+
+      return card;
+    }
+
+    function loadPortfolio() {
+      Papa.parse(GOOGLE_SHEET_CSV_URL, {
+        download: true,
+        header: true,
+        skipEmptyLines: true,
+        complete: function(results) {
+          const allShowsGrid = document.getElementById('all-shows-grid');
+          allShowsGrid.innerHTML = '';
+
+          const shows = [];
+
+          results.data.forEach(show => {
+            if (!show['Show Name']) return;
+
+            const startDate = parseDate(show['Start Date']);
+            if (startDate) {
+              show.parsedStartDate = startDate;
+            } else {
+              show.parsedStartDate = new Date(8640000000000000);
+            }
+            shows.push(show);
+          });
+
+        // Sort reverse-chronologically (newest/most recent first)
+        shows.sort((a, b) => b.parsedStartDate - a.parsedStartDate);
+
+          if (shows.length > 0) {
+            shows.forEach(show => {
+              allShowsGrid.appendChild(createShowCard(show));
+            });
+          } else {
+            allShowsGrid.innerHTML = '<p style="color:#666;">No shows available.</p>';
+          }
+        },
+        error: function(err) {
+          console.error('Error fetching CSV:', err);
+          document.getElementById('all-shows-grid').innerHTML = '<p>Failed to load data from spreadsheet.</p>';
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadPortfolio();
+
+      // Modal event listeners
+      document.getElementById('modal-close-btn').addEventListener('click', closeModal);
+      document.getElementById('modal-overlay').addEventListener('click', closeModal);
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          closeModal();
+        }
+      });
+    });
+  </script>
+</body>
+</html>

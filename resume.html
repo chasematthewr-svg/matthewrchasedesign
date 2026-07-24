@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="referrer" content="no-referrer">
+  <title>Resume / CV | Matthew R. Chase Design</title>
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    /* Full-screen video background setup */
+    #bg-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -2;
+    }
+
+    /* Dark overlay so text remains easy to read over the video */
+    .video-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.55);
+      z-index: -1;
+    }
+
+    /* Shared Float Up + Fade Keyframes */
+    @keyframes floatUpFade {
+      from {
+        opacity: 0;
+        transform: translateY(50px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Keep delayed sections hidden initially */
+    .resume-hero,
+    .documents-container,
+    footer {
+      opacity: 0;
+    }
+
+    /* 1. Header (Starts at 0s) */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5rem 3rem;
+      animation: floatUpFade 2.5s ease-out 0s forwards;
+    }
+
+    /* Header logo image styling */
+    .logo img {
+      max-height: 200px; 
+      width: auto;
+      display: block;
+    }
+
+    /* Centered Navigation & Menu Text */
+    nav {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem;
+    }
+
+    nav a {
+      font-family: "Times New Roman", Times, serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-decoration: none;
+      color: #ffffff;
+      transition: color 0.2s ease;
+    }
+
+    nav a:hover, nav a.active {
+      color: #4af;
+    }
+
+    /* Social Media Icons */
+    .header-socials {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .header-socials a img {
+      width: 42px;
+      height: 42px;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+      opacity: 0.85;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .header-socials a:hover img {
+      opacity: 1;
+      transform: translateY(-2px);
+    }
+
+    /* 2. Hero Section Header Title (Starts at 2.5s) */
+    .resume-hero {
+      padding: 4rem 3rem 1rem 3rem;
+      text-align: center;
+      animation: floatUpFade 2s ease-out 2.5s forwards;
+    }
+
+    .resume-title {
+      font-family: "Helvetica Neue", Times, serif;
+      font-size: 3rem; 
+      font-weight: 400;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #ffffff;
+      margin: 0;
+    }
+
+    /* 3. Action Buttons Section (Starts at 4s) */
+    .documents-container {
+      max-width: 800px;
+      margin: 3rem auto 6rem auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem;
+      animation: floatUpFade 2s ease-out 4s forwards;
+    }
+
+    .doc-button {
+      font-family: "Helvetica Neue", Arial, sans-serif;
+      font-size: 1.25rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.1);
+      border: 2px solid rgba(255, 255, 255, 0.8);
+      padding: 1.2rem 3rem;
+      border-radius: 6px;
+      backdrop-filter: blur(4px);
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+    }
+
+    .doc-button:hover {
+      background: #ffffff;
+      color: #000000;
+      border-color: #ffffff;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.5);
+    }
+
+    /* 4. Footer (Starts at 5.5s) */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: #888;
+      font-size: 0.9rem;
+      animation: floatUpFade 1.5s ease-out 5.5s forwards;
+    }
+
+    /* Mobile Responsiveness */
+    @media (max-width: 600px) {
+      .documents-container {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 1.5rem;
+      }
+
+      .doc-button {
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Background Video Element -->
+  <video autoplay muted loop playsinline id="bg-video">
+    <source src="Portfolio Background.mp4" type="video/mp4">
+  </video>
+  
+  <!-- Overlay tint for text legibility -->
+  <div class="video-overlay"></div>
+
+  <!-- Header & Navigation -->
+  <header>
+    <div class="logo">
+      <a href="index.html">
+        <img src="Chase Design Logo.png?v=2" alt="Matthew R. Chase Sound Design">
+      </a>
+    </div>
+
+    <!-- Centered Main Nav -->
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="resume.html" class="active">Resume/CV</a>
+      <a href="portfolio.html">Portfolio</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+
+    <!-- Social Links -->
+    <div class="header-socials">
+      <a href="http://www.linkedin.com/in/chasematthewr" target="_blank" rel="noopener noreferrer">
+        <img src="linkedin.avif" alt="LinkedIn">
+      </a>
+      <a href="https://www.facebook.com/ChaseMatthewR" target="_blank" rel="noopener noreferrer">
+        <img src="facebook.avif" alt="Facebook">
+      </a>
+      <a href="https://www.instagram.com/matthewrchase/" target="_blank" rel="noopener noreferrer">
+        <img src="instagram.avif" alt="Instagram">
+      </a>
+    </div>
+  </header>
+
+  <!-- Title Header -->
+  <section class="resume-hero">
+    <h1 class="resume-title">Resume / CV</h1>
+  </section>
+
+  <!-- Action Buttons -->
+  <main class="documents-container">
+    <button class="doc-button" onclick="openLatestPDF('Resume')">
+      Resume
+    </button>
+    <button class="doc-button" onclick="openLatestPDF('CV')">
+      CV
+    </button>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <p>&copy; Matthew R. Chase Design. All rights reserved.</p>
+  </footer>
+
+  <script>
+    async function openLatestPDF(folderName) {
+      try {
+        // Request directory listing
+        const response = await fetch(`./${folderName}/`);
+        const text = await response.text();
+
+        // Parse HTML to find links to .pdf files
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(text, 'text/html');
+        const links = Array.from(doc.querySelectorAll('a'));
+
+        // Find the first href ending in .pdf
+        const pdfLink = links.find(a => {
+          const href = a.getAttribute('href') || '';
+          return href.toLowerCase().endsWith('.pdf');
+        });
+
+        if (pdfLink) {
+          let pdfPath = pdfLink.getAttribute('href');
+          
+          // Ensure correct relative path formatting
+          if (!pdfPath.startsWith('http') && !pdfPath.startsWith('/')) {
+            pdfPath = `${folderName}/${pdfPath.split('/').pop()}`;
+          }
+          
+          window.open(pdfPath, '_blank');
+        } else {
+          alert(`No PDF file found inside the ${folderName} folder.`);
+        }
+      } catch (err) {
+        console.error('Error opening PDF:', err);
+        alert(`Could not automatically open the ${folderName} document.`);
+      }
+    }
+  </script>
+
+</body>
+</html>
