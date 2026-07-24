@@ -132,3 +132,101 @@ footer {
   font-size: 0.8rem;
   border-top: 1px solid #222;
 }
+
+/* ==========================================
+   MOBILE & TABLET RESPONSIVENESS (Screens <= 768px)
+   ========================================== */
+
+/* Fix mobile browser address bar height jumping */
+#bg-video,
+.video-overlay {
+  height: 100dvh !important; /* Uses dynamic viewport height for mobile browsers */
+}
+
+@media (max-width: 768px) {
+  
+  /* 1. Header & Navigation Layout */
+  header {
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 1.5rem !important;
+    gap: 1rem;
+  }
+
+  .logo img {
+    max-height: 120px !important; /* Scale down logo for phone screens */
+  }
+
+  nav {
+    flex-wrap: wrap; /* Allows menu items to wrap neatly onto a second line */
+    justify-content: center;
+    gap: 1rem 1.5rem !important;
+  }
+
+  nav a {
+    font-size: 1.1rem !important; /* Readable touch targets */
+    padding: 0.25rem 0.5rem;
+  }
+
+  .header-socials {
+    gap: 1rem !important;
+  }
+
+  .header-socials a img {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  /* 2. Hero Titles & Headings */
+  .contact-title,
+  .resume-title,
+  .about-title,
+  .portfolio-title {
+    font-size: 2rem !important;
+    letter-spacing: 2px !important;
+  }
+
+  .contact-hero,
+  .resume-hero,
+  .about-hero,
+  .portfolio-hero {
+    padding: 2rem 1.5rem 1rem 1.5rem !important;
+  }
+
+  /* 3. Cards & Main Containers */
+  .contact-container,
+  .documents-container,
+  .about-container,
+  .portfolio-container {
+    width: 90% !important;
+    max-width: 100% !important;
+    margin: 1.5rem auto 4rem auto !important;
+    padding: 1.5rem !important;
+  }
+
+  /* 4. Action Buttons (Resume/CV) */
+  .documents-container {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem !important;
+  }
+
+  .doc-button {
+    width: 100%;
+    text-align: center;
+    padding: 1rem 1.5rem !important;
+    font-size: 1.1rem !important;
+  }
+
+  /* 5. Social Links on Contact Page */
+  .social-connect-links {
+    flex-direction: column;
+    gap: 0.75rem !important;
+  }
+
+  /* 6. Portfolio Table Horizontal Scrolling (Prevents page stretch) */
+  .portfolio-table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
