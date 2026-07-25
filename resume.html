@@ -19,6 +19,12 @@
       z-index: -2;
     }
 
+    /* Dynamic viewport height for mobile browsers */
+    #bg-video,
+    .video-overlay {
+      height: 100dvh;
+    }
+
     /* Dark overlay so text remains easy to read over the video */
     .video-overlay {
       position: fixed;
@@ -153,6 +159,8 @@
       transition: all 0.3s ease;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
       cursor: pointer;
+      text-align: center;
+      display: inline-block;
     }
 
     .doc-button:hover {
@@ -173,15 +181,43 @@
     }
 
     /* Mobile Responsiveness */
-    @media (max-width: 600px) {
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: center;
+        padding: 1rem 1.5rem;
+        gap: 1rem;
+      }
+
+      .logo img {
+        max-height: 100px;
+      }
+
+      nav {
+        flex-wrap: wrap;
+        gap: 0.75rem 1.25rem;
+      }
+
+      .resume-hero {
+        padding: 2rem 1.5rem 1rem 1.5rem;
+      }
+
+      .resume-title {
+        font-size: 2rem;
+        letter-spacing: 2px;
+      }
+
       .documents-container {
         flex-direction: column;
         align-items: stretch;
-        gap: 1.5rem;
+        gap: 1.25rem;
+        padding: 0 1.5rem;
+        margin: 2rem auto 4rem auto;
       }
 
       .doc-button {
-        text-align: center;
+        width: 100%;
+        box-sizing: border-box;
       }
     }
   </style>
@@ -232,57 +268,20 @@
     <h1 class="resume-title">Resume / CV</h1>
   </section>
 
-  <!-- Action Buttons -->
+  <!-- Action Buttons (Direct Links for GitHub Pages Compatibility) -->
   <main class="documents-container">
-    <button class="doc-button" onclick="openLatestPDF('Resume')">
+    <a href="Resume/Matthew R Chase Resume 090925.pdf" target="_blank" rel="noopener noreferrer" class="doc-button">
       Resume
-    </button>
-    <button class="doc-button" onclick="openLatestPDF('CV')">
+    </a>
+    <a href="CV/Matthew R Chase CV.pdf" target="_blank" rel="noopener noreferrer" class="doc-button">
       CV
-    </button>
+    </a>
   </main>
 
   <!-- Footer -->
   <footer>
     <p>&copy; Matthew R. Chase Design. All rights reserved.</p>
   </footer>
-
-  <script>
-    async function openLatestPDF(folderName) {
-      try {
-        // Request directory listing
-        const response = await fetch(`./${folderName}/`);
-        const text = await response.text();
-
-        // Parse HTML to find links to .pdf files
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(text, 'text/html');
-        const links = Array.from(doc.querySelectorAll('a'));
-
-        // Find the first href ending in .pdf
-        const pdfLink = links.find(a => {
-          const href = a.getAttribute('href') || '';
-          return href.toLowerCase().endsWith('.pdf');
-        });
-
-        if (pdfLink) {
-          let pdfPath = pdfLink.getAttribute('href');
-          
-          // Ensure correct relative path formatting
-          if (!pdfPath.startsWith('http') && !pdfPath.startsWith('/')) {
-            pdfPath = `${folderName}/${pdfPath.split('/').pop()}`;
-          }
-          
-          window.open(pdfPath, '_blank');
-        } else {
-          alert(`No PDF file found inside the ${folderName} folder.`);
-        }
-      } catch (err) {
-        console.error('Error opening PDF:', err);
-        alert(`Could not automatically open the ${folderName} document.`);
-      }
-    }
-  </script>
 
 </body>
 </html>
